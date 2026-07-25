@@ -1,4 +1,4 @@
-# ⚡ PrestoPay: Server-Driven UI Layout Compiler & Payment SDK Simulator
+#  PrestoPay: Server-Driven UI Layout Compiler & Payment SDK Simulator
 
 **PrestoPay is a tool that reads simple text-based layout instructions and instantly converts them into a fully interactive mobile payment screen.**
 
