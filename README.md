@@ -4,9 +4,7 @@
 
 <div align="center">
   <a href="https://vidushinegi22.github.io/PrestoPay/"><strong> Click Here to View Live Demo</strong></a>
-  <br><br>
-  <h3>Built by <strong>Vidushi Negi</strong></h3>
-  <p><strong>A First-Principles Showcase of Monadic Parser Combinators, Abstract Syntax Tree (AST) Compilation, and Functional Reactive UI State Streams.</strong></p>
+
 </div>
 
 ---
