@@ -1,84 +1,114 @@
-# PrestoPay SDK Layout Compiler & FRP Simulator
+# ⚡ PrestoPay: Server-Driven UI Layout Compiler & Payment SDK Simulator
 
-A high-fidelity layout compiler and interactive payment SDK simulator demonstrating **monadic parser combinators**, **Abstract Syntax Tree (AST) compilation**, and **Functional Reactive state transitions**.
-
-This project is built from first principles (zero dependencies) to align with the core engineering values of **Juspay's SDK CoE**.
+<div align="center">
+  <h3>Built by <strong>Vidushi Negi</strong></h3>
+  <p><strong>A First-Principles Showcase of Monadic Parser Combinators, Abstract Syntax Tree (AST) Compilation, and Functional Reactive UI State Streams.</strong></p>
+</div>
 
 ---
 
-## ⚡ Core Architecture
+> [!IMPORTANT]
+> **JUSPAY REVIEWER QUICK-START:**
+> This repository is built **entirely from scratch with zero dependencies**. It showcases:
+> 1. A custom **Monadic Parser Combinator** library (in [parser.js](file:///C:/Users/lenovo/.gemini/antigravity/scratch/prestopay-sdk/parser.js)) mimicking Haskell's Parsec.
+> 2. An **AST Layout Compiler** (in [compiler.js](file:///C:/Users/lenovo/.gemini/antigravity/scratch/prestopay-sdk/compiler.js)) converting DSL to responsive DOM components.
+> 3. An **FRP State Stream Store** (in [state.js](file:///C:/Users/lenovo/.gemini/antigravity/scratch/prestopay-sdk/state.js)) modeling state transitions as pure functions without side effects.
 
-The application is structured into four functional layers, keeping state pure and processing pipeline-oriented:
+---
+
+## 💡 The Core Problem: The App Store Update Bottleneck
+In modern mobile payment systems, user checkout screens must remain dynamic. If a merchant wants to run a promotional discount, adjust their brand colors, or add a new checkout option (e.g., UPI Intent, Simpl PayLater):
+* **The Traditional Way**: Developers modify Android/iOS code, test, build a production bundle, submit to the App Store/Google Play Store, and wait 2 to 5 days for approval. Users must then download the update before seeing changes.
+* **The PrestoPay Way (Server-Driven UI)**: The merchant defines their layout rules in a simple text-based config (DSL) on their server. The checkout SDK inside the app downloads this text instruction, compiles it on-the-fly into an AST, and instantly renders the updated checkout screen to the user. **Zero app updates, zero wait time.**
+
+---
+
+## ⚡ Architecture Flow
+
+The compiler pipelines the layout compilation and state management in a strictly uni-directional data flow:
 
 ```
-[ DSL Source Code ]
-       │
-       ▼ (parser.js) ── Using Parser Combinators (e.g., satisfy, many, choice)
-  [ AST Config ]
-       │
-       ▼ (compiler.js) ── Dynamic DOM Node Generation
-[ Mobile Checkout UI ] <─── Reactive Event Binding
-       │
-       ▼ (state.js) ── Monadic Dispatcher (State -> Action -> State)
-  [ Payment Success ]
+[ DSL Source Layout ]
+         │
+         ▼ (parser.js) ─── Custom Parser combinators (satisfy, choice, sequence, many)
+   [ AST JSON ]
+         │
+         ▼ (compiler.js) ─── Dynamic UI Node Generation & Color Compilation
+[ Mobile Checkout Sheet ] 
+         │
+         ▼ (state.js) ─── Uni-directional Action Dispatcher
+   [ Payment Flow ] ─── (INIT → AUTH_PENDING → VERIFYING → SUCCESS)
 ```
 
-### 1. Functional Parser Combinators (`parser.js`)
-Instead of regex-splitting or imperative loops, parsing is modeled as a sequence of pure parser functions:
-* **The Parser Monad**: A wrapper class holding a parser function: `run :: String -> Result (Value, String)`.
-* **Combinators**: Exposes pure functional building blocks:
-  * `satisfy(predicate)`: Parses single characters matching predicates.
-  * `many(parser)`: Runs a parser greedily 0 or more times.
-  * `sequence(parsers)`: Runs a chain of parsers, collecting results.
-  * `choice(parsers)`: Standard choice combinator (tries alternative parsers in order).
-  * `lexeme(parser)`: Strips trailing whitespaces cleanly.
+---
 
-### 2. AST Compiler (`compiler.js`)
-* Translates the parsed configurations (JSON schema representing the merchant name, theme color, transaction amount, and card/UPI options list) into stylized native mobile representations.
+## 🛠️ Deep-Dive into the Modules
 
-### 3. FRP State Stream (`state.js`)
-* Models payment updates as immutable state transformations. 
-* Employs a state store dispatch system representing the payment lifecycle:
-  $$\text{INIT} \rightarrow \text{AUTH\_PENDING} \rightarrow \text{VERIFYING} \rightarrow \text{SUCCESS}$$
-* Subscribes the mobile preview thread to the store, updating layout templates instantly when states update.
+### 1. Monadic Parser Combinators ([parser.js](file:///C:/Users/lenovo/.gemini/antigravity/scratch/prestopay-sdk/parser.js))
+Rather than using regex splits or fragile index checks, parsing is modeled as a monadic execution chain.
+* **The Parser Signature**: 
+  $$\text{Parser } a = \text{String} \rightarrow \text{Result } (a, \text{String})$$
+* **Core Combinators Implemented**:
+  * `satisfy(predicate)`: Parses single characters matching conditional checks.
+  * `many(parser)` / `many1(parser)`: Runs recursive parsers matching greedily.
+  * `sequence(parsers)`: Runs parsers in order, building a list of outputs.
+  * `choice(parsers)`: Standard choice selection (tries alternative parsers).
+  * `lexeme(parser)`: Consumes trailing whitespace.
+* **The DSL Grammar**:
+  Parses checkout layouts matching:
+  ```text
+  checkout MerchantName {
+    theme: #HexColor
+    amount: Currency Number
+    options: [ Type(Details), ... ]
+  }
+  ```
+
+### 2. AST Layout Compiler ([compiler.js](file:///C:/Users/lenovo/.gemini/antigravity/scratch/prestopay-sdk/compiler.js))
+* Takes the AST configuration output from the parser.
+* Maps variables dynamically (compiling color variables into visual gradients, and creating responsive payment nodes).
+* Binds event listeners for payment clicks directly to the dispatch pipeline.
+
+### 3. FRP UI State Stream ([state.js](file:///C:/Users/lenovo/.gemini/antigravity/scratch/prestopay-sdk/state.js))
+* Models payment state transitions as pure, immutable functions:
+  $$\text{Reducer} :: \text{State} \rightarrow \text{Action} \rightarrow \text{State}$$
+* The **State Store** triggers layout re-renders reactively using the Observer pattern:
+  * **INIT**: Renders the compiled payment options.
+  * **AUTH_PENDING**: Shows secure loader and interactive OTP inputs.
+  * **VERIFYING**: Handles gateway security signatures.
+  * **SUCCESS**: Displays visual success checkmark and payment metadata.
 
 ---
 
-## 🔧 How to Run and Test Locally
+## 🔧 How to Run & Verify Locally
 
-This project is fully self-contained (HTML, CSS, and vanilla JS) with zero dependencies.
+Since the project uses pure vanilla HTML/JS/CSS, it is entirely self-contained with no setup dependencies.
 
-### Option 1: Run with Python's HTTP server
-1. Open your terminal or PowerShell.
-2. Navigate to the project folder:
-   ```bash
-   cd prestopay-sdk
-   ```
-3. Launch a lightweight local server:
-   ```bash
-   python -m http-server 8000
-   ```
-4. Open your browser and navigate to `http://localhost:8000`.
+### Option A: Open directly in File Explorer
+* Double-click [index.html](file:///C:/Users/lenovo/.gemini/antigravity/scratch/prestopay-sdk/index.html) to run it directly in your browser.
 
-### Option 2: Run with NodeJS http-server
-If you have node installed:
-1. Navigate to the directory:
-   ```bash
-   cd prestopay-sdk
-   ```
-2. Start the server:
-   ```bash
-   npx http-server -p 8000
-   ```
-3. Open `http://localhost:8000` in your web browser.
+### Option B: Run a local HTTP Server
+Open your terminal in the repository folder:
+```bash
+cd prestopay-sdk
+```
 
-### Option 3: Double-Click index.html
-Simply navigate to the directory in File Explorer and double-click `index.html` to open it directly in Chrome, Edge, or Safari.
+* **Python Server** (Pre-installed):
+  ```bash
+  python -m http-server 8000
+  ```
+* **Node Server** (If you have NodeJS installed):
+  ```bash
+  npx http-server -p 8000
+  ```
+
+Open your browser and navigate to `http://localhost:8000`.
 
 ---
 
-## 💡 Technical Interview Pitch (For Juspay Recruiters)
+## 📈 Technical Pitch Guidelines (For Interviews)
 
-When discussing this project in recruitment rounds, highlight these details:
-* **First-Principles Parsing**: "I built a monadic parser combinator framework in JavaScript inspired by Haskell's Parsec to parse UI layout declarations into structural AST representations."
-* **State Management**: "Instead of mutating state or using React's default hooks, I managed UI transitions using an immutable State Dispatcher and Observable streams to replicate a Functional Reactive Programming model."
+> [!TIP]
+> **Use these talking points during your technical interviews:**
+> * **First-Principles Coding**: *"I wanted to understand Server-Driven UI, so I built a layout compiler from scratch. I wrote my own monadic parser combinator framework in JavaScript, mimicking how Haskell's Parsec parses layout instructions into AST objects."*
+> * **Predictable State Transitions**: *"I modeled the payment lifecycle (OTP inputs, loaders, success) as a pure state stream. Transitions are done immutably via actions, keeping components decoupled from the core business state."*
