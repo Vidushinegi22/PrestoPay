@@ -52,7 +52,7 @@ This project is fully self-contained (HTML, CSS, and vanilla JS) with zero depen
 1. Open your terminal or PowerShell.
 2. Navigate to the project folder:
    ```bash
-   cd C:\Users\lenovo\.gemini\antigravity\scratch\prestopay-sdk
+   cd prestopay-sdk
    ```
 3. Launch a lightweight local server:
    ```bash
@@ -64,7 +64,7 @@ This project is fully self-contained (HTML, CSS, and vanilla JS) with zero depen
 If you have node installed:
 1. Navigate to the directory:
    ```bash
-   cd C:\Users\lenovo\.gemini\antigravity\scratch\prestopay-sdk
+   cd prestopay-sdk
    ```
 2. Start the server:
    ```bash
