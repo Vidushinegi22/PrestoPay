@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrestoPay SDK Compiler & FRP Simulator</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%237e22ce'/><path d='M30,30 L50,70 L70,30' fill='none' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand-title">
+      ⚡ PrestoPay <span class="brand-badge">SDK CoE Showcase</span>
+    </div>
+    <div style="font-size: 0.85rem; color: var(--text-secondary);">
+      Built by <strong>Vidushi Negi</strong>
+    </div>
+  </header>
+
+  <!-- Split Screen Layout -->
+  <main class="dashboard-layout">
+    
+    <!-- Left Column: Compiler Controls & AST -->
+    <section class="panel">
+      <div class="panel-title">
+        <span>📝 Layout DSL Editor</span>
+        <span style="font-size: 0.75rem; color: var(--accent-secondary); font-family: var(--font-mono);">AST Parser Combinator v1.0</span>
+      </div>
+      
+      <div class="editor-container">
+        <textarea id="dsl-editor" class="editor" spellcheck="false">checkout AmazeCart {
+  theme: #7e22ce
+  amount: INR 1499.00
+  options: [
+    Card(HDFC Mastercard •••• 4242),
+    UPI(vidushi@okaxis),
+    Netbanking(State Bank of India)
+  ]
+}</textarea>
+      </div>
+
+      <!-- Compiler feedback console -->
+      <div id="error-panel" class="error-panel">
+        <strong>⚠️ Compilation Error:</strong>
+        <p id="error-text" style="margin-top: 0.25rem;"></p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="btn-group">
+        <button id="compile-btn" class="btn btn-primary">⚡ Compile Layout</button>
+        <button id="reset-btn" class="btn btn-secondary">Reset to Demo</button>
+      </div>
+
+      <!-- AST output viewer -->
+      <div style="margin-top: 1rem;">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase;">
+          Abstract Syntax Tree (AST JSON)
+        </div>
+        <pre id="ast-code-block" class="ast-viewer">{ "loading": true }</pre>
+      </div>
+    </section>
+
+    <!-- Right Column: Interactive Mobile viewport -->
+    <section class="panel" style="justify-content: center; align-items: center;">
+      <div class="panel-title" style="align-self: flex-start; width: 100%;">
+        <span>📱 Simulated Native Hyper SDK</span>
+        <span style="font-size: 0.75rem; color: var(--success);">● LIVE REACTION</span>
+      </div>
+
+      <div class="phone-viewport">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div id="phone-screen" class="phone-screen">
+            <!-- Rendered mobile checkout sheet goes here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Technical Explainer Footer -->
+  <footer style="padding: 1.5rem 2rem; background: var(--bg-secondary); border-top: 1px solid var(--border-color); font-size: 0.8rem; text-align: center; color: var(--text-muted); line-height: 1.6;">
+    <div style="max-width: 900px; margin: 0 auto;">
+      <strong>Technical Architecture:</strong> This showcase runs a custom parser built from first principles using pure functional parser combinators (similar to Haskell's Parsec). State management in the checkout view uses an immutable State Store and Observable patterns modeling Functional Reactive UI streams.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="parser.js"></script>
+  <script src="compiler.js"></script>
+  <script src="state.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
